@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="view_multicur_customer_statement_wizard_form" model="ir.ui.view">
+            <field name="name">customer.statement.wizard.form</field>
+            <field name="model">multicur.customer.statement.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Print Customer Statement of Account in Multiple Currency">
+                    <group>
+                        <field name="partner_id" invisible="0"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button string="Print" type="object" name="print_customer_statement" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_window_multicur_customer_statement_wizard" model="ir.actions.act_window">
+            <field name="name">Multiple Currency Customer Statement of Account</field>
+            <field name="res_model">multicur.customer.statement.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+            'default_partner_id': active_id,
+            'default_date_from': (datetime.date.today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'),
+            'default_date_to': datetime.date.today().strftime('%Y-%m-%d'),
+            }</field>
+            <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+        </record>
+
+        <record id="action_server_multicur_customer_statement_wizard" model="ir.actions.server">
+            <field name="name">Print Statement of Account in Multiple Currency</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+        if record:
+            action_values = env.ref('mkl_soa_multicur_report_a.action_window_multicur_customer_statement_wizard').read()[0]
+            action = action_values
+            </field>
+        </record>
+
+    </data>
+</odoo>

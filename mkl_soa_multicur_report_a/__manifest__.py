@@ -15,10 +15,11 @@ It allows users to generate a detailed customer statement of account with the fo
 - **Multi Currency**: Transaction is displayed in Multiple Currency
 - **Transaction History**: Displays a chronological list of transactions (invoices and payments) with details and running balance computation.
 - **Integrated Reporting**: The report is accessible directly under the customer record, streamlining access for accountants and sales representatives.
+- **Multi Language**: English and Spanish. Depending on user laguage.
     
 This app is ideal for businesses that want to provide clear and concise statements to their customers.
 """,
-    'price': 25.00,
+    'price': 30.00,
     'currency': 'EUR',
     'license': 'OPL-1',
     'author': 'Mikul Buncha',

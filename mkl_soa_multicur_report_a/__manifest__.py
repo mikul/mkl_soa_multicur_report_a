@@ -24,7 +24,7 @@ This app is ideal for businesses that want to provide clear and concise statemen
     'license': 'OPL-1',
     'author': 'Mikul Buncha',
     'company': 'Mikool Inc',
-    'depends': ['accountant', 'base'],
+    'depends': ['account', 'base'],
     'data': [
         'security/ir.model.access.csv',
         'report/customer_statement_template.xml',

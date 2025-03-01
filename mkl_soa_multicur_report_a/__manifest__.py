@@ -1,6 +1,6 @@
 {
     'name': 'Customer Statement of Account Multiple Currency Report',
-    'version': '1.1',
+    'version': '1.2',
 
     'category': 'Accounting',
     'summary': 'Detailed Customer Statement of Account in Multiple Currency with Transaction History',

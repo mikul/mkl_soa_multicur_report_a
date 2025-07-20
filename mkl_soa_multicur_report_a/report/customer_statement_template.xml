@@ -1,0 +1,108 @@
+<odoo>
+   
+
+
+    <template id="customer_statement_multicur_report">
+        <t t-call="web.external_layout">
+            <t t-set="data" t-value="env.context.get('data')"/>
+            <t t-set="user_lang" t-value="env.user.lang and env.user.lang.split('_')[0] or 'en'"/>
+            <main>
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+
+                        <div style="width: 100%; text-align: right;">
+                            <h3>
+                                <t t-if="user_lang == 'es'">Estado de Cuenta del Cliente</t>
+                                <t t-elif="True">Customer Statement of Account</t>
+                            </h3>
+                        </div>
+
+                        <div style="width: 100%; text-align: right;">
+                            <div style="display: inline-block; text-align: left;">
+                                <hr/>
+                                <p style="text-align: right;">
+                                    <span t-esc="data.get('form', {}).get('start_date') or (user_lang == 'es' and 'Fecha de inicio no proporcionada' or 'Start Date Not Provided')"/>
+                                    <t t-if="user_lang == 'es'"> a </t>
+                                    <t t-elif="True"> to </t>
+                                    <span t-esc="data.get('form', {}).get('end_date') or (user_lang == 'es' and 'Fecha de finalización no proporcionada' or 'End Date Not Provided')"/>
+                                </p>
+                                <hr/>
+                            </div>
+                        </div>
+
+                        <div style="display: table; width: 100%;">
+                            <div style="float: left; width: 50%; padding: 10px;">
+                                <strong>
+                                    <t t-if="user_lang == 'es'">Cliente:</t>
+                                    <t t-elif="True">Customer:</t>
+                                </strong>
+                                <p><span t-esc="doc.partner_id.name"/></p>
+                                <strong>
+                                    <t t-if="user_lang == 'es'">Dirección:</t>
+                                    <t t-elif="True">Address:</t>
+                                </strong>
+                                <p>
+                                    <span t-esc="', '.join(filter(None, [doc.partner_id.street, doc.partner_id.street2, doc.partner_id.city, doc.partner_id.state_id.name, doc.partner_id.zip, doc.partner_id.country_id.name]))"/> 
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3>
+                            <t t-if="user_lang == 'es'">Resumen de Transacciones</t>
+                            <t t-elif="True">Transaction Summary</t>
+                        </h3>
+
+                        <table class="table table-condensed" style="font-size: 0.85em;">
+                            <thead>
+                                <tr>
+                                    <th><t t-if="user_lang == 'es'">Fecha</t><t t-elif="True">Date</t></th>
+                                    <th><t t-if="user_lang == 'es'">Transacción</t><t t-elif="True">Transaction</t></th>
+                                    <th><t t-if="user_lang == 'es'">Detalles</t><t t-elif="True">Details</t></th>
+                                    <th><t t-if="user_lang == 'es'">Moneda</t><t t-elif="True">Currency</t></th>
+                                    <th><t t-if="user_lang == 'es'">Monto</t><t t-elif="True">Amount</t></th>
+                                    <th><t t-if="user_lang == 'es'">Saldo</t><t t-elif="True">Balance</t></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="data.get('form', {}).get('opening_details', [])" t-as="opening_detail">
+                                    <td t-esc="opening_detail.get('date')"/>
+                                    <td/>
+                                    <td t-esc="opening_detail.get('transaction')"/>
+                                    <td t-esc="opening_detail.get('currency')"/>
+                                    <td/>
+                                    <td style="text-align: right;" t-esc="opening_detail.get('balance')" t-options='{"widget": "float", "precision": 2}'/>
+                                </tr>
+                                <tr t-foreach="data.get('form', {}).get('transactions', [])" t-as="transaction">
+                                    <td t-esc="transaction.get('date')"/>
+                                    <td t-esc="transaction.get('transaction')"/>
+                                    <td t-esc="transaction.get('details')"/>
+                                    <td t-esc="transaction.get('currency')"/>
+                                    <td style="text-align: right;" t-esc="transaction.get('amount')" t-options='{"widget": "float", "precision": 2}'/>
+                                    <td style="text-align: right;" t-esc="transaction.get('balance')" t-options='{"widget": "float", "precision": 2}'/>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr t-foreach="data.get('form', {}).get('total_balances', [])" t-as="balance">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td style="text-align: center;"><strong>
+                                        <t t-if="user_lang == 'es'">SALDO TOTAL</t>
+                                        <t t-elif="True">TOTAL BALANCE</t>
+                                    </strong></td>
+                                    <td t-esc="balance.get('currency')"/>
+                                    <td style="text-align: right;" t-esc="balance.get('ending_balance')" t-options='{"widget": "float", "precision": 2}'/>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </t>
+            </main>
+        </t>
+    </template>
+
+
+
+
+</odoo>
